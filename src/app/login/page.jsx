@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import Link from 'next/link';
 import Input from '@/components/atoms/Input';
+import Button from '@/components/atoms/Button';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -30,9 +31,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[--color-background] px-4">
-      <div className="w-full max-w-md bg-[--color-card-bg] p-6 rounded-xl shadow-md border border-[--color-border]">
-        <h2 className="text-2xl font-bold mb-6 text-[--color-text-dark]">Login to Debate Arena</h2>
+    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+      <div className="w-full max-w-md bg-background p-6 rounded-xl shadow-md shadow-shadow border border-border">
+        <h2 className="text-2xl font-bold mb-6 text-text-dark">Login to Debate Arena</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <Input
             name="email"
@@ -40,6 +41,7 @@ export default function LoginPage() {
             type="email"
             control={control}
             placeholder="Enter your email"
+            autoFocus
             required
           />
 
@@ -52,15 +54,15 @@ export default function LoginPage() {
             required
           />
 
-          <button
+          <Button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition"
           >
             Login
-          </button>
+          </Button>
         </form>
 
-        <p className="text-sm text-[--color-text-lite] mt-4 text-center">
+        <p className="text-sm text-text-lite mt-4 text-center">
           Don't have an account?{' '}
           <Link href="/register" className="text-blue-600 hover:underline">
             Register

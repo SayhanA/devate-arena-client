@@ -54,12 +54,12 @@ const FeatureDebates = () => {
     <section className="py-12 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-3xl font-bold text-text-dark">
             Trending Debates
           </h2>
           <Link
             href="/debates"
-            className="px-4 py-2 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"
+            className="px-4 py-2 text-text-lite bg-background border border-border hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"
           >
             View All
           </Link>

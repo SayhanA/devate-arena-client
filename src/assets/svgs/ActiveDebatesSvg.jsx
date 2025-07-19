@@ -1,13 +1,13 @@
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
-const ActiveDebatesSvg = ({className=""}) => {
+const ActiveDebatesSvg = ({className="", width="24", height="24"}) => {
   return (
     <svg
-      className={twMerge(`h-12 w-12 text-blue-600 mx-auto mb-4 ${className}`)}
+      className={twMerge(`h-12 w-12 text-blue-600 mx-auto ${className}`)}
       fill="none"
       stroke="currentColor"
-      viewBox="0 0 24 24"
+      viewBox={`0 0 ${width} ${height}`}
     >
       <path
         strokeLinecap="round"

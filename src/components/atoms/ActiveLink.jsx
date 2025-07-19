@@ -1,21 +1,25 @@
-'use client'
-import { NavLink, useLocation } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 
-const ActiveLink = ({ to = "/", children, className = "", ...props }) => {
-  const location = useLocation();
-  const path = location.pathname;
+const ActiveLink = ({ href = "/", children, className = "", ...props }) => {
+  const pathname = usePathname();
+  const isActive = pathname === href;
 
   return (
-    <NavLink
-      to={to}
+    <Link
+      href={href}
       className={twMerge(
-        `transition-colors duration-200 ${path === to ? "font-semibold text-blue-600" : "text-text-dark"} ${className}`,
+        "transition-colors duration-200 text-text-dark",
+        isActive ? "font-semibold text-blue-600" : "text-[--color-text-dark] hover:text-blue-500",
+        className
       )}
       {...props}
     >
       {children}
-    </NavLink>
+    </Link>
   );
 };
 

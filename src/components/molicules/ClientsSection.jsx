@@ -337,7 +337,7 @@ const ClientSection = () => {
   return (
     <section className="bg-background/0 overflow-hidden py-16">
       <div className="mb-12 text-center">
-        <SectionTitle>Our Happy Clients</SectionTitle>
+        <SectionTitle>Enthusiast Debaters</SectionTitle>
         <SectionDescripton className="mt-5">
           Join thousands of satisfied customers who trust RentCar for their
           transportation needs. From business professionals to families, we

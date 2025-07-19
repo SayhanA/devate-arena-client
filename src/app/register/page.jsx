@@ -1,37 +1,89 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import Link from 'next/link';
+import Input from '@/components/atoms/Input';
+import Button from '@/components/atoms/Button';
+
+const loginSchema = z.object({
+  name: z.string().min(1, ({ message: 'User name is required' })),
+  email: z.string().email({ message: 'Invalid email address' }),
+  password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
+});
 
 export default function RegisterPage() {
-  const router = useRouter();
-  const [form, setForm] = useState({ username: '', email: '', password: '' });
-  const [error, setError] = useState('');
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      name: ''
+    },
+  });
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleRegister = (e) => {
-    e.preventDefault();
-    if (form.username && form.email && form.password) {
-      localStorage.setItem('mockUser', JSON.stringify({ email: form.email, username: form.username }));
-      router.push('/dashboard');
-    } else {
-      setError('All fields are required');
-    }
+  const onSubmit = (data) => {
+    console.log('Login Data:', data);
+    // Trigger login API later
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <form onSubmit={handleRegister} className="bg-white p-8 rounded shadow w-80 space-y-4">
-        <h2 className="text-xl font-bold">Register</h2>
-        <input name="username" placeholder="Username" value={form.username} onChange={handleChange} className="border p-2 w-full" required />
-        <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} className="border p-2 w-full" required />
-        <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} className="border p-2 w-full" required />
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-        <button className="bg-green-600 text-white px-4 py-2 w-full">Register</button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+      <div className="w-full max-w-md bg-background p-6 rounded-xl shadow-md shadow-shadow border border-border">
+        <h2 className="text-2xl font-bold mb-6 text-text-dark">Register to Debate Arena</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <Input
+            name="name"
+            label="Name"
+            type="text"
+            control={control}
+            placeholder="Enter your name"
+            error={errors.name?.message}
+            required
+            autoFocus
+          />
+          
+          <Input
+            name="email"
+            label="Email"
+            type="email"
+            control={control}
+            placeholder="Enter your email"
+            error={errors.email?.message}
+            required
+          />
+
+          <Input
+            name="password"
+            label="Password"
+            type="password"
+            control={control}
+            placeholder="Enter your password"
+            error={errors.password?.message}
+            required
+          />
+
+          <Button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition"
+          >
+            Sign Up
+          </Button>
+        </form>
+
+        <p className="text-sm text-text-lite mt-4 text-center">
+          Don't have an account?{' '}
+          <Link href="/register" className="text-blue-600 hover:underline">
+            Register
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }
+

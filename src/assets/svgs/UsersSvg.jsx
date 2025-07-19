@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 const UsersSvg = ({className=''}) => {
   return (
     <svg
-      className={twMerge(`h-12 w-12 text-green-600 mx-auto mb-4 ${className}`)}
+      className={twMerge(`h-12 w-12 text-green-600 mx-auto ${className}`)}
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
