@@ -6,14 +6,20 @@ import * as z from 'zod';
 import Link from 'next/link';
 import Input from '@/components/atoms/Input';
 import Button from '@/components/atoms/Button';
+import { useDispatch } from 'react-redux';
+import { register } from '@/api/authAPIs';
+import { useRouter } from 'next/navigation';
 
 const loginSchema = z.object({
-  name: z.string().min(1, ({ message: 'User name is required' })),
+  name: z.string().min(1, { message: 'User name is required' }),
   email: z.string().email({ message: 'Invalid email address' }),
   password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
 });
 
 export default function RegisterPage() {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const {
     handleSubmit,
     control,
@@ -23,13 +29,20 @@ export default function RegisterPage() {
     defaultValues: {
       email: '',
       password: '',
-      name: ''
+      name: '',
     },
   });
 
-  const onSubmit = (data) => {
-    console.log('Login Data:', data);
-    // Trigger login API later
+  const onSubmit = async (data) => {
+    try {
+      const res = await register({ data, dispatch });
+
+      if (res.status === 200 || res.status === 201) {
+        router.push('/verify');
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -47,7 +60,7 @@ export default function RegisterPage() {
             required
             autoFocus
           />
-          
+
           <Input
             name="email"
             label="Email"
@@ -77,13 +90,12 @@ export default function RegisterPage() {
         </form>
 
         <p className="text-sm text-text-lite mt-4 text-center">
-          Don't have an account?{' '}
-          <Link href="/register" className="text-blue-600 hover:underline">
-            Register
+          Already have an account?{' '}
+          <Link href="/login" className="text-blue-600 hover:underline">
+            Login
           </Link>
         </p>
       </div>
     </div>
   );
 }
-

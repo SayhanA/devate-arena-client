@@ -1,3 +1,4 @@
+import Image from "next/image";
 import SectionDescripton from "../atoms/SectionDescripton";
 import SectionTitle from "../atoms/SectionTitle";
 
@@ -355,7 +356,9 @@ const ClientSection = () => {
                 className="group flex-shrink-0 cursor-pointer"
               >
                 <div className="relative opacity-40 hover:opacity-100">
-                  <img
+                  <Image
+                    width={90}
+                    height={90}
                     src={client.image}
                     alt={client.name}
                     className="h-20 w-20 rounded-full border-4 border-white object-cover shadow-lg transition-transform duration-300 group-hover:scale-110 dark:border-gray-700"
@@ -379,7 +382,9 @@ const ClientSection = () => {
                 className="group flex-shrink-0 cursor-pointer"
               >
                 <div className="relative opacity-40 hover:opacity-100">
-                  <img
+                  <Image
+                    width={90}
+                    height={90}
                     src={client.image}
                     alt={client.name}
                     className="h-20 w-20 rounded-full border-4 border-white object-cover shadow-lg transition-transform duration-300 group-hover:scale-110 dark:border-gray-700"
@@ -403,7 +408,9 @@ const ClientSection = () => {
                 className="group flex-shrink-0 cursor-pointer"
               >
                 <div className="relative opacity-40 hover:opacity-100">
-                  <img
+                  <Image
+                    width={90}
+                    height={90}
                     src={client.image}
                     alt={client.name}
                     className="h-20 w-20 rounded-full border-4 border-white object-cover shadow-lg transition-transform duration-300 group-hover:scale-110 dark:border-gray-700"

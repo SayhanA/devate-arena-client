@@ -6,75 +6,53 @@ import * as z from 'zod';
 import Link from 'next/link';
 import Input from '@/components/atoms/Input';
 import Button from '@/components/atoms/Button';
-import { useEffect, useState } from 'react';
 import api from '@/api/config/axiosInstance';
-import { login } from '@/api/authAPIs';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-const loginSchema = z.object({
+const verifySchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
-  password: z.string().min(4, { message: 'Password must be at least 4 characters' }),
+  token: z.string().min(4, { message: 'Token must be at least 4 characters' }),
 });
 
-export default function LoginPage() {
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const [serverError, setServerError] = useState('');
-
+export default function VerifyPage() {
   const {
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(verifySchema),
     defaultValues: {
       email: '',
-      password: '',
+      token: '',
     },
   });
+
+  const [serverError, setServerError] = useState('');
+  const router = useRouter();
 
   const onSubmit = async (data) => {
     try {
       setServerError('');
-      const res = await login({ data, dispatch });
+      const res = await api.post('/auth/verify', data);
 
-      if (res?.status === 200 || res?.status === 201) {
-        router.push('/dashboard');
-      } else {
-        setServerError(res?.message || 'Login failed. Please try again.');
-      }
-    } catch (err) {
-      const msg = err?.response?.data?.message || 'An unexpected error occurred.';
-      setServerError(msg);
-    }
-  };
-
-  const fetchUser = async () => {
-    try {
-      const res = await api.get('/auth/user');
       if (res.status === 200 || res.status === 201) {
-        router.push('/');
+        // ✅ Client-side redirect
+        router.push('/login');
       } else {
-        router.push('/verify');
+        setServerError('Verification failed. Please try again.');
       }
     } catch (error) {
-      router.push('/verify');
+      const message = error?.response?.data?.message || 'An unexpected error occurred';
+      setServerError(message);
     }
   };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <div className="w-full max-w-md bg-background p-6 rounded-xl shadow-md shadow-shadow border border-border">
-        <h2 className="text-2xl font-bold mb-6 text-text-dark">Login to Debate Arena</h2>
-
-        {serverError && (
-          <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">{serverError}</div>
-        )}
+        <h2 className="text-2xl font-bold mb-6 text-text-dark">Verify Your Account</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <Input
@@ -89,26 +67,28 @@ export default function LoginPage() {
           />
 
           <Input
-            name="password"
-            label="Password"
-            type="password"
+            name="token"
+            label="Token"
+            type="text"
             control={control}
-            placeholder="Enter your password"
+            placeholder="Enter your verification token"
             required
-            error={errors.password?.message}
+            error={errors.token?.message}
           />
+
+          {serverError && <p className="text-red-600 text-sm font-medium">{serverError}</p>}
 
           <Button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Logging in...' : 'Login'}
+            {isSubmitting ? 'Verifying...' : 'Verify'}
           </Button>
         </form>
 
         <p className="text-sm text-text-lite mt-4 text-center">
-          Don't have an account?
+          Don't have an account?{' '}
           <Link href="/register" className="text-blue-600 hover:underline">
             Register
           </Link>
