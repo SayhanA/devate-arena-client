@@ -12,6 +12,7 @@ import { logout as LogoutApi } from '@/api/authAPIs';
 import Image from 'next/image';
 import { logout } from '@/redux/slices/authSlice';
 import { persistor } from '@/redux/store';
+import CustomLink from '../atoms/CustomLink';
 
 const navItems = [
   { href: '/debates', label: 'Browse Debates' },
@@ -39,13 +40,13 @@ const Header = () => {
     <header className="bg-background text-text-dark shadow-md shadow-shadow sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-10 py-5 flex justify-between items-center">
         {/* Logo */}
-        <Link
+        <CustomLink
           href="/"
           className="text-xl font-bold flex items-center gap-2 text-text-dark hover:text-blue-500 transition"
         >
           <LogoSvg className="w-6 h-6 text-text-dark" />
           <span className="text-text-dark">DebtArena</span>
-        </Link>
+        </CustomLink>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-6">
@@ -65,36 +66,50 @@ const Header = () => {
           <ThemeToggle />
 
           {user ? (
-            <Image
-              src={user?.profilePicture}
-              width={50}
-              height={50}
-              className="rounded-full h-10 w-10 object-cover border-border border-2"
-              alt="User profile"
-            />
+            <div className="w-10 h-10 relative group">
+              <Image
+                src={user?.profilePicture}
+                width={50}
+                height={50}
+                className="rounded-full h-10 w-10 object-cover border-border border-2"
+                alt="User profile"
+              />
+              <div className="w-40 scale-0 p-1 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-400 flex-col absolute group-hover:top-14 top-0 end-0 rounded-lg shadow-xl shadow-shadow bg-background">
+                <div className="px-5 py-2 flex flex-col gap-3">
+                  <CustomLink href={'/profile'}>Profile</CustomLink>
+                  <CustomLink href={'/settings'}>Settings</CustomLink>
+                </div>
+                <Button
+                  type="button"
+                  alt="Click here to logout."
+                  onClick={handleLogout}
+                  className="py-2 w-full"
+                >
+                  Logout
+                </Button>
+              </div>
+            </div>
           ) : (
             ''
           )}
 
           {!isAuthenticated ? (
             <>
-              <Link
+              <CustomLink
                 href="/login"
                 className="px-4 py-2 rounded-md border border-gray-300 hover:bg-blue-500 hover:text-white text-text-dark transition text-sm"
               >
                 Login
-              </Link>
-              <Link
+              </CustomLink>
+              <CustomLink
                 href="/register"
                 className="px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition text-sm"
               >
                 Sign Up
-              </Link>
+              </CustomLink>
             </>
           ) : (
-            <Button onClick={handleLogout} className="py-1 px-3 hover:bg-text-lite/20">
-              Logout
-            </Button>
+            ''
           )}
         </div>
 
@@ -131,20 +146,20 @@ const Header = () => {
 
         {!isAuthenticated ? (
           <>
-            <Link
+            <CustomLink
               href="/login"
               className="block text-sm hover:text-blue-500"
               onClick={() => setIsOpen(false)}
             >
               Login
-            </Link>
-            <Link
+            </CustomLink>
+            <CustomLink
               href="/register"
               className="block text-sm hover:text-blue-500"
               onClick={() => setIsOpen(false)}
             >
               Sign Up
-            </Link>
+            </CustomLink>
           </>
         ) : (
           <Button
