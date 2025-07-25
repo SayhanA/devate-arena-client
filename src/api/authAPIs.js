@@ -38,11 +38,14 @@ const authAPIs = {
   async getUser() {
     try {
       const res = await api.get('/auth/user');
+      return res;
     } catch (error) {
       console.error(error);
     }
   },
-  async logout() {},
+  async logout() {
+    const res = await api.get('/auth/logout');
+  },
 };
 
 export const { register, login, verify, getUser, logout } = authAPIs;

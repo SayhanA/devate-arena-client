@@ -1,4 +1,4 @@
-import store from '@/redux/store';
+import { store } from '@/redux/store';
 import api from './axiosInstance';
 import { updateAccessToken } from '@/redux/slices/authSlice';
 

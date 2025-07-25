@@ -6,10 +6,9 @@ import * as z from 'zod';
 import Link from 'next/link';
 import Input from '@/components/atoms/Input';
 import Button from '@/components/atoms/Button';
-import { useEffect, useState } from 'react';
-import api from '@/api/config/axiosInstance';
+import { useState } from 'react';
 import { login } from '@/api/authAPIs';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 
 const loginSchema = z.object({
@@ -40,7 +39,7 @@ export default function LoginPage() {
       const res = await login({ data, dispatch });
 
       if (res?.status === 200 || res?.status === 201) {
-        router.push('/dashboard');
+        router.push('/');
       } else {
         setServerError(res?.message || 'Login failed. Please try again.');
       }
@@ -49,23 +48,6 @@ export default function LoginPage() {
       setServerError(msg);
     }
   };
-
-  const fetchUser = async () => {
-    try {
-      const res = await api.get('/auth/user');
-      if (res.status === 200 || res.status === 201) {
-        router.push('/');
-      } else {
-        router.push('/verify');
-      }
-    } catch (error) {
-      router.push('/verify');
-    }
-  };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
